@@ -1,0 +1,9 @@
+node_modules/
+dist/
+output/
+data/
+.env
+*.pdf
+*.tsbuildinfo
+.DS_Store
+Thumbs.db

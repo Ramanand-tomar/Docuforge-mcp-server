@@ -1,0 +1,202 @@
+You are a senior full-stack engineer and system architect.
+
+Your task is to design and implement a production-ready MCP server and developer tool that enables AI-powered document creation, editing, and PDF generation, similar to an IDE workflow.
+
+## 🎯 Project Goal
+
+Build an MCP-compatible server called "DocuForge MCP" that allows AI agents and IDEs (like VS Code) to:
+
+* Create documents
+* Edit structured content
+* Format documents
+* Export high-quality PDFs
+
+This system should be scalable and suitable for startup deployment.
+
+---
+
+## 🏗️ Architecture Requirements
+
+### 1. MCP Server
+
+* Implement MCP protocol support (JSON-RPC based)
+* Expose the following tools:
+
+#### Core Tools:
+
+1. create_document
+
+   * Input: title, format (markdown/latex/plain)
+   * Output: document_id
+
+2. append_content
+
+   * Input: document_id, section, content
+   * Output: success
+
+3. edit_content
+
+   * Input: document_id, section_id, new_content
+   * Output: success
+
+4. format_document
+
+   * Input: document_id, style (academic, resume, report, blog)
+   * Output: formatted document
+
+5. export_pdf
+
+   * Input: document_id
+   * Output: downloadable PDF file path
+
+6. get_document
+
+   * Input: document_id
+   * Output: full document content
+
+---
+
+### 2. Backend
+
+* Use Node.js (preferred) or Python
+* Suggested stack:
+
+  * Express / FastAPI
+  * File storage (local initially, S3 later)
+  * Database: PostgreSQL or MongoDB
+
+---
+
+### 3. PDF Engine
+
+Support multiple formats:
+
+* Markdown → PDF using Pandoc
+* HTML → PDF using Puppeteer
+* LaTeX → PDF using pdflatex
+
+---
+
+### 4. VS Code Integration
+
+Create a VS Code extension that:
+
+* Connects to MCP server
+* Provides commands:
+
+  * "Create Document"
+  * "Write with AI"
+  * "Export to PDF"
+* Sidebar panel showing document structure
+
+---
+
+### 5. AI Integration
+
+* Integrate LLM APIs (Claude / OpenAI)
+* Features:
+
+  * Generate sections
+  * Rewrite content
+  * Summarize
+  * Format automatically
+
+---
+
+### 6. API Design
+
+* REST + MCP endpoints
+* Authentication (JWT-based)
+* Rate limiting
+
+---
+
+### 7. Frontend Dashboard (Optional but recommended)
+
+* React-based UI
+* Features:
+
+  * Document editor
+  * Live preview
+  * Export button
+
+---
+
+## 📂 Project Structure
+
+* /server (MCP server + backend)
+* /client (React frontend)
+* /vscode-extension
+* /pdf-engine
+
+---
+
+## 🔐 Security
+
+* Input validation
+* File sanitization
+* Secure PDF generation
+* Auth middleware
+
+---
+
+## 🚀 Deployment
+
+* Dockerize all services
+* Provide docker-compose setup
+* Cloud-ready (AWS/GCP)
+
+---
+
+## 📈 Startup Features (IMPORTANT)
+
+Design with monetization in mind:
+
+* Multi-user support
+* Document history/versioning
+* Paid export templates
+* API usage billing
+
+---
+
+## 🧪 Testing
+
+* Unit tests
+* Integration tests
+* API tests
+
+---
+
+## 📘 Documentation
+
+* README
+* API docs
+* Setup guide
+* Example usage
+
+---
+
+## 🎯 Deliverables
+
+* Fully working MCP server
+* Working VS Code extension
+* PDF generation working
+* Sample documents
+* Deployment guide
+
+---
+
+## ⚡ Coding Standards
+
+* Clean architecture
+* Modular code
+* Proper comments
+* Type safety (TypeScript preferred)
+
+---
+
+Build this step-by-step and ensure everything is runnable locally.
+
+Also include sample prompts for AI document generation.
+
+End goal: A developer can install the extension, connect to the MCP server, and generate/export PDFs seamlessly.

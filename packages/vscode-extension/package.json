@@ -1,0 +1,69 @@
+{
+  "name": "docuforge-vscode",
+  "displayName": "DocuForge",
+  "description": "AI-powered document creation and PDF generation",
+  "version": "0.1.0",
+  "publisher": "docuforge",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "docuforge.createDocument",
+        "title": "DocuForge: Create Document"
+      },
+      {
+        "command": "docuforge.exportPdf",
+        "title": "DocuForge: Export to PDF"
+      },
+      {
+        "command": "docuforge.writeWithAi",
+        "title": "DocuForge: Write with AI"
+      },
+      {
+        "command": "docuforge.refreshDocuments",
+        "title": "DocuForge: Refresh Documents"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "docuforge",
+          "title": "DocuForge",
+          "icon": "$(file-text)"
+        }
+      ]
+    },
+    "views": {
+      "docuforge": [
+        {
+          "id": "docuforgeDocuments",
+          "name": "Documents"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "DocuForge",
+      "properties": {
+        "docuforge.serverUrl": {
+          "type": "string",
+          "default": "http://localhost:3000",
+          "description": "DocuForge server URL"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "esbuild src/extension.ts --bundle --outdir=dist --external:vscode --format=cjs --platform=node",
+    "watch": "esbuild src/extension.ts --bundle --outdir=dist --external:vscode --format=cjs --platform=node --watch"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.27.0",
+    "typescript": "^5.8.0"
+  }
+}

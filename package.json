@@ -1,0 +1,31 @@
+{
+  "name": "docuforge-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-powered document creation, editing, and PDF generation MCP server",
+  "scripts": {
+    "build": "pnpm -r run build",
+    "dev:mcp": "tsx packages/mcp-server/src/index.ts",
+    "dev:mcp-http": "tsx packages/mcp-server/src/http.ts",
+    "dev:api": "tsx packages/rest-api/src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:mcp": "tsx scripts/test-mcp.ts"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3",
+      "esbuild",
+      "puppeteer"
+    ]
+  }
+}

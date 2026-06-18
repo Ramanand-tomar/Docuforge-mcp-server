@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  docuforge-server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - STORAGE_TYPE=sqlite
+      - SQLITE_PATH=/app/data/docuforge.db
+      - PDF_OUTPUT_DIR=/app/output
+      - PORT=3000
+      - AUTH_ENABLED=false
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-sonnet-4-20250514}
+    volumes:
+      - docuforge-data:/app/data
+      - docuforge-output:/app/output
+    restart: unless-stopped
+
+  docuforge-dashboard:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dashboard
+    ports:
+      - "5173:80"
+    depends_on:
+      - docuforge-server
+    restart: unless-stopped
+
+volumes:
+  docuforge-data:
+  docuforge-output:

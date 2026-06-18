@@ -1,0 +1,10 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/pdf-engine" },
+    { "path": "packages/mcp-server" },
+    { "path": "packages/rest-api" },
+    { "path": "packages/ai-integration" }
+  ]
+}
