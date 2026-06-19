@@ -14,54 +14,64 @@ DocuForge has been heavily upgraded with production-ready features tailored for 
 6. **Multi-stage Docker Builds**: Optimized `Dockerfile` and `docker-compose.yml` for running the REST API and MCP services side-by-side in production.
 7. **VS Code Extension**: A functional VS Code extension bundled into the repository for IDE integration.
 
-## 🛠 Getting Started
+## 🤖 Quick Start for Claude Desktop (Local MCP)
 
-### 1. Clone the Repository
+Want to give Claude (or Cursor) the ability to autonomously format IEEE papers, manage citations, and export PDFs? You can run DocuForge locally as an MCP server!
+
+### 1. Download & Build
 
 ```bash
+# Clone the repository
 git clone https://github.com/Ramanand-tomar/Docuforge-mcp-server.git
 cd Docuforge-mcp-server
-```
 
-### 2. Configure Environment
-
-Create a `.env` file in the root based on `.env.example`:
-
-```bash
-cp .env.example .env
-```
-
-You should configure the following important variables in your `.env`:
-- `STORAGE_TYPE=sqlite` (Use sqlite for persistence)
-- `MCP_API_KEY=your_secure_mcp_api_key_here` (For remote MCP)
-- `JWT_SECRET=your_secure_jwt_secret_here` (For Dashboard auth)
-- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` (For PDF uploads)
-- `GEMINI_API_KEY` (For AI suggestion capabilities)
-
-### 3. Local Installation & Development
-
-This project uses `pnpm` workspaces.
-
-```bash
-# Install dependencies
+# Install dependencies and compile the code
 pnpm install
+pnpm build
+```
 
-# Run MCP server (stdio - for local Claude Desktop testing)
-pnpm dev:mcp
+### 2. Connect to Claude Desktop
 
-# Run REST API & Remote MCP HTTP Server
+Open your Claude Desktop configuration file:
+- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+- **Mac:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+
+Add the `docuforge` tool to your `mcpServers` list. **Make sure to replace `<YOUR_ABSOLUTE_PATH>` with the actual path to the folder where you cloned the repo**, and add your own Gemini API key!
+
+```json
+{
+  "mcpServers": {
+    "docuforge": {
+      "command": "node",
+      "args": [
+        "<YOUR_ABSOLUTE_PATH>/Docuforge-mcp-server/packages/mcp-server/dist/index.js"
+      ],
+      "env": {
+        "STORAGE_TYPE": "sqlite",
+        "GEMINI_API_KEY": "your_gemini_api_key_here"
+      }
+    }
+  }
+}
+```
+
+### 3. Start Creating!
+Restart Claude Desktop. You will see a plug icon indicating the tools are loaded! You can now type:
+> *"Create a new IEEE format research paper about Neural Networks, add a few sections, and export it to a PDF."*
+
+---
+
+## 🛠 Local Development & Dashboard
+
+If you want to run the full dashboard and REST API locally:
+
+```bash
+# Run the local REST API
 pnpm dev:api
 
-# Run React dashboard
-cd packages/dashboard && pnpm dev
-```
-
-### 4. Running with Docker Compose
-
-To spin up the entire production stack locally (REST API + MCP SSE server):
-
-```bash
-docker compose up --build
+# In a new terminal, run the React frontend dashboard
+cd packages/dashboard
+pnpm dev
 ```
 
 ## ☁️ Cloud Deployment (Render)
@@ -73,28 +83,6 @@ This repository includes a `render.yaml` Blueprint file, making it extremely eas
 3. Connect your GitHub repository.
 4. Render will automatically detect the `render.yaml` file and provision the web services.
 5. Set your secret environment variables (`MCP_API_KEY`, `JWT_SECRET`, `CLOUDINARY_*`) in the Render dashboard for the service.
-
-## 🔌 Connecting Remote MCP Clients
-
-Once deployed, you can connect AI clients like Claude Desktop to your remote MCP server using the official MCP CLI tool:
-
-```json
-{
-  "mcpServers": {
-    "docuforge": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/inspector",
-        "https://your-render-url.onrender.com/mcp"
-      ],
-      "env": {
-        "MCP_API_KEY": "your_secure_mcp_api_key_here"
-      }
-    }
-  }
-}
-```
 
 ## 🏗 System Architecture
 
