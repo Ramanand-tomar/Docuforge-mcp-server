@@ -12,6 +12,7 @@ COPY packages/mcp-server/package.json packages/mcp-server/
 COPY packages/rest-api/package.json packages/rest-api/
 COPY packages/ai-integration/package.json packages/ai-integration/
 COPY packages/dashboard/package.json packages/dashboard/
+COPY packages/vscode-extension/package.json packages/vscode-extension/
 
 RUN pnpm config set ignore-scripts false
 RUN pnpm install --frozen-lockfile
