@@ -22,7 +22,7 @@ export function registerAiSummarize(
               type: "text" as const,
               text: JSON.stringify({
                 success: false,
-                error: "AI integration not configured. Set ANTHROPIC_API_KEY environment variable.",
+                error: "AI integration not configured. Set GEMINI_API_KEY environment variable.",
               }),
             },
           ],

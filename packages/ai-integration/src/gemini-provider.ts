@@ -1,31 +1,31 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenAI } from "@google/genai";
 import type { IAiProvider } from "./ai-service.js";
 
-export class ClaudeProvider implements IAiProvider {
-  private client: Anthropic;
+export class GeminiProvider implements IAiProvider {
+  private ai: GoogleGenAI;
   private model: string;
 
   constructor(
     apiKey?: string,
-    model: string = "claude-sonnet-4-20250514",
+    model: string = "gemini-2.5-flash",
   ) {
-    this.client = new Anthropic({ apiKey });
+    this.ai = new GoogleGenAI({ apiKey: apiKey || process.env.GEMINI_API_KEY });
     this.model = model;
   }
 
   async generateContent(prompt: string, context?: string): Promise<string> {
-    const systemMessage = context
+    const systemInstruction = context
       ? `You are DocuForge AI, a professional document writing assistant. You generate high-quality, well-structured content.\n\nDocument context:\n${context}`
       : "You are DocuForge AI, a professional document writing assistant. You generate high-quality, well-structured content.";
 
-    const response = await this.client.messages.create({
+    const response = await this.ai.models.generateContent({
       model: this.model,
-      max_tokens: 4096,
-      system: systemMessage,
-      messages: [{ role: "user", content: prompt }],
+      contents: prompt,
+      config: {
+        systemInstruction: systemInstruction,
+      }
     });
 
-    const textBlock = response.content.find((b) => b.type === "text");
-    return textBlock ? textBlock.text : "";
+    return response.text || "";
   }
 }

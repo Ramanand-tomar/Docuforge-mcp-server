@@ -26,7 +26,7 @@ export async function htmlToPdf(
     if (hasMermaid) {
       await page
         .waitForFunction(
-          () => document.body.getAttribute("data-mermaid-done") === "true",
+          () => (globalThis as any).document.body.getAttribute("data-mermaid-done") === "true",
           { timeout: 15000 },
         )
         .catch(() => {

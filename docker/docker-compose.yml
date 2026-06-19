@@ -13,8 +13,49 @@ services:
       - PDF_OUTPUT_DIR=/app/output
       - PORT=3000
       - AUTH_ENABLED=false
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-change-me}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
       - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-sonnet-4-20250514}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME:-}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-}
+      - MCP_API_KEY=${MCP_API_KEY:-}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - docuforge-data:/app/data
+      - docuforge-output:/app/output
+    restart: unless-stopped
+
+  docuforge-mcp-http:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: ["node", "packages/mcp-server/dist/http.js"]
+    ports:
+      - "3001:3001"
+    environment:
+      - STORAGE_TYPE=sqlite
+      - SQLITE_PATH=/app/data/docuforge.db
+      - PDF_OUTPUT_DIR=/app/output
+      - MCP_PORT=3001
+      - NODE_ENV=production
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-change-me}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-sonnet-4-20250514}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME:-}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-}
+      - MCP_API_KEY=${MCP_API_KEY:-}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     volumes:
       - docuforge-data:/app/data
       - docuforge-output:/app/output

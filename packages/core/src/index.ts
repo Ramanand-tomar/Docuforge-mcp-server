@@ -26,3 +26,6 @@ export {
   DocumentNotFoundError,
   SectionNotFoundError,
 } from "./errors.js";
+export { CitationManager, citationManager } from "./citation-manager.js";
+export type { Citation, CitationStyle } from "./citation-manager.js";
+export * from "./importers/index.js";

@@ -10,7 +10,7 @@ export function registerFormatDocument(
 ) {
   server.tool(
     "format_document",
-    "Apply a style (academic, resume, report, blog) to a document.",
+    "Apply a style (academic, resume, report, blog, research, ieee) to a document.",
     FormatDocumentSchema.shape,
     async ({ document_id, style }) => {
       const doc = await docService.formatDocument({

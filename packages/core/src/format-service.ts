@@ -37,6 +37,20 @@ const STYLE_TEMPLATES: Record<DocumentStyle, StyleTemplate> = {
     headerFormat: "left",
     sectionFormat: "plain",
   },
+  research: {
+    name: "research",
+    description: "Academic research paper with two-column layout",
+    cssClass: "research",
+    headerFormat: "center",
+    sectionFormat: "numbered",
+  },
+  ieee: {
+    name: "ieee",
+    description: "IEEE formal format with two columns",
+    cssClass: "ieee",
+    headerFormat: "center",
+    sectionFormat: "numbered",
+  },
 };
 
 export class FormatService {

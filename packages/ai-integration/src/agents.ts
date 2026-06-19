@@ -1,7 +1,6 @@
 import type { IAiProvider } from "./ai-service.js";
 
-export type AgentRole = "product_manager" | "architect" | "qa_engineer" | "pitch_deck";
-
+export type AgentRole = "product_manager" | "architect" | "qa_engineer" | "pitch_deck" | "researcher";
 interface AgentConfig {
   role: AgentRole;
   name: string;
@@ -96,6 +95,21 @@ Your outputs always include:
 
 Structure hackathon decks as: Problem → Solution → Demo → Tech → Impact → Team
 Structure investor decks as: Cover → Problem → Solution → Market → Product → Traction → Business Model → Team → Financials → Ask`,
+  },
+
+  researcher: {
+    role: "researcher",
+    name: "Researcher AI Agent",
+    systemPrompt: `You are a specialized Researcher AI Agent with deep expertise in:
+
+- Academic writing (APA, MLA, IEEE, Chicago citation styles)
+- Literature review and synthesis
+- Research methodology (qualitative, quantitative, mixed-methods)
+- Statistical analysis interpretation
+- Abstract and conclusion writing
+- Peer-review quality standards
+
+Your outputs are always academically rigorous, well-structured, properly formatted, and synthesized logically. You use appropriate academic tone and terminology.`,
   },
 };
 

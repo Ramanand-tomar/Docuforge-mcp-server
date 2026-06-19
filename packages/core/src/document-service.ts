@@ -7,9 +7,11 @@ import type {
   EditContentInput,
   FormatDocumentInput,
   DocumentSection,
+  SearchResult,
 } from "./types.js";
 import type { IStorage } from "./storage/storage.interface.js";
 import { DocumentNotFoundError, SectionNotFoundError } from "./errors.js";
+import { citationManager } from "./citation-manager.js";
 
 export class DocumentService {
   constructor(private storage: IStorage) {}
@@ -26,6 +28,7 @@ export class DocumentService {
       version: 1,
     };
     await this.storage.createDocument(doc);
+    await this.storage.saveVersion(doc.id, doc.version, doc);
     return doc.id;
   }
 
@@ -41,6 +44,7 @@ export class DocumentService {
     doc.updatedAt = new Date().toISOString();
     doc.version++;
     await this.storage.updateDocument(doc.id, doc);
+    await this.storage.saveVersion(doc.id, doc.version, doc);
     return section;
   }
 
@@ -54,6 +58,7 @@ export class DocumentService {
     doc.updatedAt = new Date().toISOString();
     doc.version++;
     await this.storage.updateDocument(doc.id, doc);
+    await this.storage.saveVersion(doc.id, doc.version, doc);
   }
 
   async formatDocument(input: FormatDocumentInput): Promise<Document> {
@@ -62,6 +67,7 @@ export class DocumentService {
     doc.updatedAt = new Date().toISOString();
     doc.version++;
     await this.storage.updateDocument(doc.id, doc);
+    await this.storage.saveVersion(doc.id, doc.version, doc);
     return doc;
   }
 
@@ -73,6 +79,36 @@ export class DocumentService {
     return this.storage.listDocuments(userId);
   }
 
+  async generateToc(id: string): Promise<string> {
+    const doc = await this.getDocumentOrThrow(id);
+    const tocParts: string[] = [];
+    doc.sections.forEach((section, index) => {
+      tocParts.push(`${index + 1}. ${section.title}`);
+    });
+    return tocParts.join("\\n");
+  }
+
+  async searchDocuments(query: string, limit?: number): Promise<SearchResult[]> {
+    return this.storage.searchDocuments(query, limit);
+  }
+
+  async getDocumentHistory(id: string): Promise<Array<{ id: string; version: number; created_at: string }>> {
+    return this.storage.getVersions(id);
+  }
+
+  async restoreVersion(id: string, version: number): Promise<Document> {
+    const snapshot = await this.storage.getVersion(id, version);
+    if (!snapshot) throw new Error(`Version ${version} not found for document ${id}`);
+    
+    const currentDoc = await this.getDocumentOrThrow(id);
+    snapshot.version = currentDoc.version + 1;
+    snapshot.updatedAt = new Date().toISOString();
+    
+    await this.storage.updateDocument(id, snapshot);
+    await this.storage.saveVersion(id, snapshot.version, snapshot);
+    return snapshot;
+  }
+
   async deleteDocument(id: string): Promise<void> {
     await this.getDocumentOrThrow(id);
     await this.storage.deleteDocument(id);
@@ -82,11 +118,45 @@ export class DocumentService {
     const doc = await this.getDocumentOrThrow(id);
     const parts: string[] = [];
 
+    const citationMap = new Map<string, number>();
+    const orderedCitations: string[] = [];
+    let figCount = 1;
+    let tableCount = 1;
+
+    const processContent = (content: string) => {
+      let processed = content;
+      // Resolve citations [cite:UUID]
+      processed = processed.replace(/\[cite:([a-zA-Z0-9-]+)\]/g, (match, citationId) => {
+        if (!citationMap.has(citationId)) {
+          citationMap.set(citationId, citationMap.size + 1);
+          orderedCitations.push(citationId);
+        }
+        return `[${citationMap.get(citationId)}]`;
+      });
+      // Resolve figure captions [figcap:Caption]
+      processed = processed.replace(/\[figcap:(.*?)\]/g, (match, caption) => {
+        return `<div class="diagram-caption">Fig. ${figCount++}. ${caption}</div>`;
+      });
+      // Resolve table captions [tabcap:Caption]
+      processed = processed.replace(/\[tabcap:(.*?)\]/g, (match, caption) => {
+        const roman = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][tableCount - 1] || tableCount.toString();
+        tableCount++;
+        return `<div class="table-caption">TABLE ${roman}. ${caption}</div>`;
+      });
+      return processed;
+    };
+
     if (doc.format === "markdown") {
       parts.push(`# ${doc.title}\n`);
       for (const section of doc.sections) {
-        parts.push(`## ${section.title}\n`);
-        parts.push(section.content);
+        if (doc.style === "ieee" && section.title.toLowerCase() === "abstract") {
+          parts.push(`<div class="abstract">`);
+          parts.push(processContent(section.content));
+          parts.push(`</div>`);
+        } else {
+          parts.push(`## ${section.title}\n`);
+          parts.push(processContent(section.content));
+        }
         parts.push("");
       }
     } else if (doc.format === "latex") {
@@ -107,9 +177,23 @@ export class DocumentService {
       for (const section of doc.sections) {
         parts.push(section.title);
         parts.push("-".repeat(section.title.length));
-        parts.push(section.content);
+        parts.push(processContent(section.content));
         parts.push("");
       }
+    }
+
+    if (orderedCitations.length > 0 && doc.style === "ieee") {
+      const allCitations = await citationManager.getCitations(id);
+      parts.push(`<div class="references">`);
+      parts.push(`## References\n`);
+      for (const cid of orderedCitations) {
+        const citation = allCitations.find(c => c.id === cid);
+        if (citation) {
+          const num = citationMap.get(cid);
+          parts.push(`<p>[${num}] ${citationManager.formatCitation(citation, "ieee")}</p>`);
+        }
+      }
+      parts.push(`</div>`);
     }
 
     return parts.join("\n");

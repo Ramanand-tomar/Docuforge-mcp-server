@@ -14,6 +14,8 @@
   },
   "dependencies": {
     "@docuforge/core": "workspace:*",
+    "cloudinary": "^2.10.0",
+    "docx": "^9.7.1",
     "markdown-it": "^14.1.0",
     "puppeteer": "^24.0.0"
   },

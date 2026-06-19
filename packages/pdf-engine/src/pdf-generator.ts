@@ -5,6 +5,14 @@ import { renderMarkdownToHtml } from "./markdown-renderer.js";
 import { wrapHtmlWithTemplate } from "./html-templates.js";
 import { htmlToPdf } from "./puppeteer-pdf.js";
 
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({ 
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET 
+});
+
 export class PdfGenerator {
   constructor(
     private docService: DocumentService,
@@ -15,7 +23,7 @@ export class PdfGenerator {
     const doc = await this.docService.getDocument(documentId);
     const content = await this.docService.renderDocumentContent(documentId);
     const html = this.contentToHtml(doc, content);
-    const fullHtml = wrapHtmlWithTemplate(html, doc.title, doc.style);
+    const fullHtml = wrapHtmlWithTemplate(html, doc.title, doc.style, doc.style === "research" || doc.style === "ieee");
 
     await mkdir(this.outputDir, { recursive: true });
     const sanitizedTitle = doc.title.replace(/[^a-zA-Z0-9_-]/g, "_");
@@ -23,7 +31,19 @@ export class PdfGenerator {
     const outputPath = resolve(this.outputDir, filename);
 
     await htmlToPdf(fullHtml, outputPath);
-    return outputPath;
+    
+    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      console.log(`Cloudinary credentials not fully configured. Returning local path: ${outputPath}`);
+      return outputPath;
+    }
+    
+    console.log(`Uploading PDF to Cloudinary...`);
+    const uploadResult = await cloudinary.uploader.upload(outputPath, {
+      resource_type: "raw", // PDFs should be uploaded as 'raw' to serve correctly in browser
+      public_id: `docuforge_papers/${sanitizedTitle}_${Date.now()}.pdf`
+    });
+
+    return uploadResult.secure_url;
   }
 
   private contentToHtml(doc: Document, renderedContent: string): string {

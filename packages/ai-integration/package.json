@@ -13,7 +13,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.52.0",
+    "@google/genai": "^2.8.0",
     "@docuforge/core": "workspace:*"
   },
   "devDependencies": {

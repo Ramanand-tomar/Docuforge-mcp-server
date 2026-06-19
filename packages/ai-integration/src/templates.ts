@@ -459,6 +459,94 @@ For each slide: exact content + speaker notes + suggested visuals`,
 ## VI. Conclusion and Future Work
 
 ## References (IEEE format: [1] Author, "Title," Journal, vol., no., pp., year.)`,
+
+  research_paper: `Generate a full academic research paper:
+
+# [Paper Title]
+**Authors:** [Names] | **Affiliation:** [Institution]
+
+## Abstract
+## Introduction
+## Literature Review
+## Methodology
+## Results
+## Discussion
+## Conclusion
+## References (APA format)`,
+
+  literature_review: `Generate a standalone literature review:
+
+# Literature Review: [Topic]
+
+## Introduction
+## Thematic Synthesis
+## Research Gaps
+## Future Directions
+## References`,
+
+  research_proposal: `Generate a research/grant proposal:
+
+# Research Proposal: [Topic]
+
+## Background
+## Research Questions
+## Hypotheses
+## Methodology
+## Timeline (include Gantt chart in mermaid)
+## Budget
+## Expected Outcomes
+## References`,
+
+  systematic_review: `Generate a systematic review:
+
+# Systematic Review: [Topic]
+
+## Introduction
+## Inclusion and Exclusion Criteria
+## Search Strategy
+## Data Extraction Table (markdown table)
+## Quality Assessment
+## Results
+## Discussion
+## Conclusion`,
+
+  thesis_chapter: `Generate a single thesis chapter:
+
+# Chapter [N]: [Chapter Title]
+
+## Introduction
+## [Content Section 1]
+## [Content Section 2]
+## Summary`,
+
+  conference_abstract: `Generate a 250-word structured abstract for conference submission:
+
+# [Paper Title]
+
+## Background
+## Objectives
+## Methods
+## Results
+## Conclusion`,
+
+  case_study: `Generate an academic case study:
+
+# Case Study: [Topic/Entity]
+
+## Context
+## Problem/Challenge
+## Analysis
+## Findings
+## Implications
+## References`,
+
+  annotated_bibliography: `Generate an annotated bibliography:
+
+# Annotated Bibliography: [Topic]
+
+For each source, provide:
+- Citation (APA format)
+- 150-word annotation (summary, evaluation, and relevance to the research topic)`,
 };
 
 export type TemplateType = keyof typeof DOC_TEMPLATES;
@@ -485,6 +573,14 @@ export function listTemplates(): Array<{ type: string; name: string }> {
     feasibility_study: "Feasibility Study",
     readme: "README.md",
     ieee_paper: "IEEE Research Paper",
+    research_paper: "Full Academic Research Paper",
+    literature_review: "Standalone Literature Review",
+    research_proposal: "Research/Grant Proposal",
+    systematic_review: "Systematic Review (PRISMA)",
+    thesis_chapter: "Thesis Chapter",
+    conference_abstract: "Conference Abstract",
+    case_study: "Academic Case Study",
+    annotated_bibliography: "Annotated Bibliography",
   };
   return Object.entries(names).map(([type, name]) => ({ type, name }));
 }

@@ -6,3 +6,9 @@ export const config = {
   authEnabled: process.env.AUTH_ENABLED === "true",
   jwtSecret: process.env.JWT_SECRET || "dev-secret-change-me",
 };
+
+if (process.env.NODE_ENV === "production") {
+  if (!process.env.JWT_SECRET || process.env.JWT_SECRET === "dev-secret-change-me") {
+    throw new Error("FATAL ERROR: JWT_SECRET must be set to a secure value in production.");
+  }
+}

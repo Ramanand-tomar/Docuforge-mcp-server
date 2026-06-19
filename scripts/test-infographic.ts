@@ -183,7 +183,7 @@ async function main() {
   <div class="ig-callout-icon">⚠️</div>
   <div>
     <h4>Requirement</h4>
-    <p>Set ANTHROPIC_API_KEY to enable AI infographic generation. Template-based infographics work without an API key.</p>
+    <p>Set GEMINI_API_KEY to enable AI infographic generation. Template-based infographics work without an API key.</p>
   </div>
 </div>`),
   });

@@ -17,7 +17,11 @@ RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN pnpm -r run build || true
+RUN pnpm -r run build
+
+# Prune dev dependencies after build to save space
+RUN pnpm -r exec rm -rf node_modules src tsconfig.json
+RUN pnpm install --prod --frozen-lockfile
 
 # Stage 2: Production
 FROM node:22-slim
@@ -47,5 +51,7 @@ ENV PDF_OUTPUT_DIR=/app/output
 ENV PORT=3000
 
 EXPOSE 3000
+EXPOSE 3001
 
-CMD ["npx", "tsx", "packages/rest-api/src/index.ts"]
+# Command is meant to be overridden in docker-compose.yml for MCP vs REST
+CMD ["node", "packages/rest-api/dist/index.js"]

@@ -40,6 +40,7 @@ export function registerAgentTools(
         { role: "architect", name: "System Architect Agent", specialization: "HLD, LLD, system design, architecture diagrams, tech stack selection" },
         { role: "qa_engineer", name: "QA Engineer Agent", specialization: "Test cases, bug reports, edge cases, QA checklists, security testing" },
         { role: "pitch_deck", name: "Pitch Deck Agent", specialization: "Hackathon pitches, investor decks, market analysis, competitive positioning" },
+        { role: "researcher", name: "Researcher AI Agent", specialization: "Academic writing, literature review, research methodology, statistical analysis interpretation" },
       ];
       return {
         content: [{ type: "text" as const, text: JSON.stringify({ agents, usage: "Use generate_document with the appropriate template_type, or use agent-specific tools like generate_prd, generate_hld, etc." }, null, 2) }],
@@ -73,6 +74,9 @@ export function registerAgentTools(
         "hld", "lld", "bug_report", "test_cases", "edge_cases",
         "hackathon_pitch", "startup_pitch", "market_research",
         "competitor_analysis", "feasibility_study", "readme", "ieee_paper",
+        "research_paper", "literature_review", "research_proposal",
+        "systematic_review", "thesis_chapter", "conference_abstract",
+        "case_study", "annotated_bibliography",
       ]).describe("Type of document to generate"),
       description: z.string().min(1).describe("Detailed description of your project/product/feature. Be specific about what you're building, the tech stack, target audience, and any constraints."),
       format: z.enum(["markdown", "latex", "plain"]).default("markdown").describe("Document format"),
@@ -81,7 +85,7 @@ export function registerAgentTools(
     async ({ title, template_type, description, format, style }) => {
       const system = getAgentSystem();
       if (!system) {
-        return { content: [{ type: "text" as const, text: JSON.stringify({ success: false, error: "AI not configured. Set ANTHROPIC_API_KEY." }) }] };
+        return { content: [{ type: "text" as const, text: JSON.stringify({ success: false, error: "AI not configured. Set GEMINI_API_KEY." }) }] };
       }
 
       // Determine which agent to use
@@ -92,6 +96,9 @@ export function registerAgentTools(
         hackathon_pitch: "pitch_deck", startup_pitch: "pitch_deck",
         market_research: "pitch_deck", competitor_analysis: "pitch_deck",
         feasibility_study: "product_manager", readme: "architect", ieee_paper: "product_manager",
+        research_paper: "researcher", literature_review: "researcher", research_proposal: "researcher",
+        systematic_review: "researcher", thesis_chapter: "researcher", conference_abstract: "researcher",
+        case_study: "researcher", annotated_bibliography: "researcher",
       };
 
       const agent = agentMap[template_type] || "product_manager";
@@ -465,6 +472,120 @@ Use markdown checkboxes (- [ ]) for each item. Be thorough and specific.`;
   );
 
   // ═══════════════════════════════════════════════════
+  // RESEARCHER AGENT TOOLS
+  // ═══════════════════════════════════════════════════
+
+  server.tool(
+    "generate_research_paper",
+    "Generate a full academic research paper with proper structure and citations.",
+    {
+      paper_title: z.string().min(1).describe("Title of the research paper"),
+      topic: z.string().min(1).describe("Research topic and key findings"),
+      methodology: z.string().min(1).describe("Research methodology used"),
+      authors: z.string().optional().describe("Author names and affiliations"),
+      institution: z.string().optional().describe("Institution name"),
+      keywords: z.string().optional().describe("Comma-separated keywords"),
+    },
+    async ({ paper_title, topic, methodology, authors, institution, keywords }) => {
+      const extra = [
+        methodology ? `Methodology: ${methodology}` : "",
+        authors ? `Authors: ${authors}` : "",
+        institution ? `Institution: ${institution}` : "",
+        keywords ? `Keywords: ${keywords}` : "",
+      ].filter(Boolean).join("\n");
+      return runAgentTool(getAgentSystem, docService, "researcher", "research_paper", paper_title, topic, extra || undefined, "academic");
+    },
+  );
+
+  server.tool(
+    "generate_literature_review",
+    "Generate a standalone literature review with thematic synthesis and research gaps.",
+    {
+      topic: z.string().min(1).describe("Research topic"),
+      scope: z.string().min(1).describe("Scope of the literature review"),
+      time_range: z.string().optional().describe("Time range of the literature to include"),
+    },
+    async ({ topic, scope, time_range }) => {
+      const extra = [
+        scope ? `Scope: ${scope}` : "",
+        time_range ? `Time Range: ${time_range}` : "",
+      ].filter(Boolean).join("\n");
+      return runAgentTool(getAgentSystem, docService, "researcher", "literature_review", `Literature Review: ${topic}`, topic, extra || undefined, "academic");
+    },
+  );
+
+  server.tool(
+    "generate_research_proposal",
+    "Generate a grant or thesis proposal with methodology, timeline, and budget.",
+    {
+      title: z.string().min(1).describe("Proposal title"),
+      research_question: z.string().min(1).describe("Main research question"),
+      methodology: z.string().min(1).describe("Proposed methodology"),
+      duration: z.string().optional().describe("Project duration"),
+      funding_body: z.string().optional().describe("Target funding body"),
+    },
+    async ({ title, research_question, methodology, duration, funding_body }) => {
+      const extra = [
+        research_question ? `Research Question: ${research_question}` : "",
+        methodology ? `Methodology: ${methodology}` : "",
+        duration ? `Duration: ${duration}` : "",
+        funding_body ? `Funding Body: ${funding_body}` : "",
+      ].filter(Boolean).join("\n");
+      return runAgentTool(getAgentSystem, docService, "researcher", "research_proposal", title, research_question, extra || undefined, "academic");
+    },
+  );
+
+  server.tool(
+    "generate_systematic_review",
+    "Generate a PRISMA-style systematic review.",
+    {
+      topic: z.string().min(1).describe("Review topic"),
+      research_questions: z.string().min(1).describe("Research questions"),
+      databases: z.string().optional().describe("Databases searched"),
+    },
+    async ({ topic, research_questions, databases }) => {
+      const extra = [
+        research_questions ? `Research Questions: ${research_questions}` : "",
+        databases ? `Databases: ${databases}` : "",
+      ].filter(Boolean).join("\n");
+      return runAgentTool(getAgentSystem, docService, "researcher", "systematic_review", `Systematic Review: ${topic}`, topic, extra || undefined, "academic");
+    },
+  );
+
+  server.tool(
+    "generate_thesis_chapter",
+    "Generate a single thesis chapter.",
+    {
+      chapter_title: z.string().min(1).describe("Chapter title"),
+      chapter_type: z.enum(["intro", "lit_review", "methodology", "results", "discussion", "conclusion"]).describe("Type of chapter"),
+      thesis_topic: z.string().min(1).describe("Overall thesis topic"),
+    },
+    async ({ chapter_title, chapter_type, thesis_topic }) => {
+      const extra = [
+        chapter_type ? `Chapter Type: ${chapter_type}` : "",
+        thesis_topic ? `Thesis Topic: ${thesis_topic}` : "",
+      ].filter(Boolean).join("\n");
+      return runAgentTool(getAgentSystem, docService, "researcher", "thesis_chapter", chapter_title, thesis_topic, extra || undefined, "academic");
+    },
+  );
+
+  server.tool(
+    "generate_conference_abstract",
+    "Generate a 250-word structured abstract for a conference.",
+    {
+      paper_title: z.string().min(1).describe("Paper title"),
+      topic: z.string().min(1).describe("Paper topic and context"),
+      findings: z.string().min(1).describe("Key findings or results"),
+    },
+    async ({ paper_title, topic, findings }) => {
+      const extra = [
+        findings ? `Findings: ${findings}` : "",
+      ].filter(Boolean).join("\n");
+      return runAgentTool(getAgentSystem, docService, "researcher", "conference_abstract", `Abstract: ${paper_title}`, topic, extra || undefined, "academic");
+    },
+  );
+
+  // ═══════════════════════════════════════════════════
   // MULTI-AGENT COLLABORATION TOOL
   // ═══════════════════════════════════════════════════
 
@@ -532,7 +653,7 @@ function noAiError() {
   return {
     content: [{
       type: "text" as const,
-      text: JSON.stringify({ success: false, error: "AI not configured. Set ANTHROPIC_API_KEY." }),
+      text: JSON.stringify({ success: false, error: "AI not configured. Set GEMINI_API_KEY." }),
     }],
   };
 }

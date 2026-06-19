@@ -56,9 +56,9 @@ Dashboard at http://localhost:5173, API at http://localhost:3000.
 Set your Anthropic API key:
 
 ```bash
-ANTHROPIC_API_KEY=sk-ant-... pnpm dev:api
+GEMINI_API_KEY=sk-ant-... pnpm dev:api
 # or
-ANTHROPIC_API_KEY=sk-ant-... pnpm dev:mcp
+GEMINI_API_KEY=sk-ant-... pnpm dev:mcp
 ```
 
 ## Claude Desktop Integration
@@ -74,7 +74,7 @@ ANTHROPIC_API_KEY=sk-ant-... pnpm dev:mcp
       "command": "npx",
       "args": ["tsx", "/full/path/to/packages/mcp-server/src/index.ts"],
       "env": {
-        "ANTHROPIC_API_KEY": "sk-ant-..."
+        "GEMINI_API_KEY": "sk-ant-..."
       }
     }
   }
@@ -83,6 +83,24 @@ ANTHROPIC_API_KEY=sk-ant-... pnpm dev:mcp
 
 4. Restart Claude Desktop
 5. You should see DocuForge tools in the tools menu
+
+### Connecting to a Remote Hosted MCP Server
+
+If you have deployed DocuForge to the cloud (via Docker), you can connect Claude Desktop (or Cursor) to it securely over HTTP SSE using an intermediary bridge like `mcp-cli` or similar tools that support SSE:
+
+```json
+{
+  "mcpServers": {
+    "docuforge-remote": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/client-cli", "http://your-cloud-domain.com/mcp"],
+      "env": {
+        "Authorization": "Bearer YOUR_MCP_API_KEY"
+      }
+    }
+  }
+}
+```
 
 ## VS Code Extension
 
@@ -98,20 +116,39 @@ To install: package with `npx vsce package` and install the `.vsix` file.
 
 **Note**: The REST API server must be running for the extension to work.
 
-## Docker Deployment
+## Cloud Deployment
 
-```bash
-cd docker
-docker compose up --build
-```
+For deploying to cloud providers like AWS ECS or Google Cloud Run, DocuForge is equipped with a multi-stage production Dockerfile and an NGINX reverse proxy setup.
 
-- API: http://localhost:3000
-- Dashboard: http://localhost:5173
+1. **Build and Push Images:**
+   ```bash
+   docker compose -f docker/docker-compose.yml build
+   docker tag docker-docuforge-server:latest your-registry/docuforge-server:latest
+   docker push your-registry/docuforge-server:latest
+   ```
+2. **Deploy via your Orchestrator:**
+   Deploy the images mounting a persistent volume (EFS / Filestore) to `/app/data` (for SQLite) and `/app/output` (for PDFs).
 
-To set the API key:
-```bash
-ANTHROPIC_API_KEY=sk-ant-... docker compose up --build
-```
+### Connecting to a Hosted Server
+Once hosted, your web dashboard is accessible at your NGINX entrypoint:
+`http://your-server-ip:80` (or your configured domain).
+
+The remote MCP HTTP endpoint will be available at:
+`http://your-server-ip:80/mcp`
+
+## Environment Variables
+
+| Variable | Description |
+|----------|-------------|
+| `NODE_ENV` | Set to `production` in live environments. |
+| `STORAGE_TYPE` | `sqlite` or `memory`. |
+| `SQLITE_PATH` | Path to the `.db` file (e.g. `./data/docuforge.db`). |
+| `JWT_SECRET` | Required in production. Keep it highly secure! |
+| `MCP_API_KEY` | Required in production. Authenticates remote MCP clients. |
+| `GEMINI_API_KEY` | Your Gemini API Key for AI generation. |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary name for image hosting. |
+| `CLOUDINARY_API_KEY` | Cloudinary API Key. |
+| `CLOUDINARY_API_SECRET`| Cloudinary API Secret. |
 
 ## Testing
 

@@ -149,7 +149,7 @@ export function registerInfographicTools(
     },
     async ({ document_id, section_title, description, infographic_type, caption }) => {
       if (!aiService) {
-        return { content: [{ type: "text" as const, text: JSON.stringify({ success: false, error: "AI not configured. Set ANTHROPIC_API_KEY." }) }] };
+        return { content: [{ type: "text" as const, text: JSON.stringify({ success: false, error: "AI not configured. Set GEMINI_API_KEY." }) }] };
       }
 
       await docService.getDocument(document_id);

@@ -22,7 +22,7 @@ export const EditContentSchema = z.object({
 export const FormatDocumentSchema = z.object({
   document_id: z.string().uuid().describe("Document ID"),
   style: z
-    .enum(["academic", "resume", "report", "blog"])
+    .enum(["academic", "resume", "report", "blog", "research", "ieee"])
     .describe("Document style to apply"),
 });
 

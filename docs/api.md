@@ -119,7 +119,7 @@ Downloads the PDF file directly.
 
 ## AI Integration
 
-Requires `ANTHROPIC_API_KEY` to be set.
+Requires `GEMINI_API_KEY` to be set.
 
 ### POST /api/documents/:id/ai/generate
 ```json

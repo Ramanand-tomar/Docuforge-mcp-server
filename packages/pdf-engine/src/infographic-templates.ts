@@ -223,7 +223,7 @@ export const INFOGRAPHIC_TEMPLATES: Record<InfographicType, InfographicTemplate>
   <div class="ig-callout-icon">⚠️</div>
   <div>
     <h4>Important</h4>
-    <p>Set <code>ANTHROPIC_API_KEY</code> environment variable to enable AI-powered tools. Without it, only the 6 core document tools will be available.</p>
+    <p>Set <code>GEMINI_API_KEY</code> environment variable to enable AI-powered tools. Without it, only the 6 core document tools will be available.</p>
   </div>
 </div>
 <div class="ig-callout success">

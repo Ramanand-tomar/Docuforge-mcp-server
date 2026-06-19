@@ -5,7 +5,7 @@ import {
   SqliteStorage,
 } from "@docuforge/core";
 import { PdfGenerator } from "@docuforge/pdf-engine";
-import { AiService, ClaudeProvider } from "@docuforge/ai-integration";
+import { AiService, GeminiProvider } from "@docuforge/ai-integration";
 import { createApp } from "./app.js";
 import { config } from "./config.js";
 
@@ -23,10 +23,10 @@ async function main() {
 
   // AI setup (optional)
   let aiService: AiService | null = null;
-  if (process.env.ANTHROPIC_API_KEY) {
-    const provider = new ClaudeProvider(
-      process.env.ANTHROPIC_API_KEY,
-      process.env.ANTHROPIC_MODEL || undefined,
+  if (process.env.GEMINI_API_KEY) {
+    const provider = new GeminiProvider(
+      process.env.GEMINI_API_KEY,
+      process.env.GEMINI_MODEL || undefined,
     );
     aiService = new AiService(provider);
   }
@@ -36,7 +36,7 @@ async function main() {
   app.listen(config.port, () => {
     console.log(`DocuForge REST API running on http://localhost:${config.port}`);
     console.log(`Storage: ${config.storageType}`);
-    console.log(`AI: ${aiService ? "enabled" : "disabled (set ANTHROPIC_API_KEY to enable)"}`);
+    console.log(`AI: ${aiService ? "enabled" : "disabled (set GEMINI_API_KEY to enable)"}`);
   });
 }
 

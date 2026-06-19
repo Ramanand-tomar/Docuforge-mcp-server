@@ -335,6 +335,40 @@ const STYLE_CSS: Record<DocumentStyle, string> = {
     .mermaid { border-radius: 12px; padding: 20px; background: #f8f9fa; margin: 28px 0; }
     .diagram-caption { color: #636e72; }
   `,
+  research: `
+    body { font-family: 'Times New Roman', Georgia, serif; max-width: 780px; margin: 0 auto; padding: 40px 60px; column-count: 2; column-gap: 24px; }
+    h1 { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 4px; column-span: all; }
+    .authors { text-align: center; font-size: 14px; color: #555; margin-bottom: 4px; column-span: all; }
+    .institution { text-align: center; font-size: 13px; color: #777; margin-bottom: 20px; column-span: all; }
+    .abstract { border: 1px solid #ccc; padding: 16px 20px; margin: 20px 0; font-size: 13px; column-span: all; }
+    .abstract-title { font-weight: bold; text-align: center; margin-bottom: 8px; }
+    h2 { font-size: 14px; font-weight: bold; text-transform: uppercase; margin-top: 24px; }
+    h3 { font-size: 13px; font-weight: bold; margin-top: 16px; }
+    p { text-align: justify; text-indent: 2em; font-size: 13px; line-height: 1.7; }
+    p:first-child { text-indent: 0; }
+    .references h2 { border-top: 1px solid #333; padding-top: 12px; }
+    .references p { text-indent: -2em; padding-left: 2em; font-size: 12px; }
+    .toc { margin: 20px 0; padding: 16px; border: 1px solid #ddd; column-span: all; }
+    .toc-title { font-weight: bold; margin-bottom: 8px; }
+    .toc-entry { display: flex; justify-content: space-between; font-size: 13px; margin: 4px 0; }
+  `,
+  ieee: `
+    body { font-family: 'Times New Roman', Times, serif; max-width: 8.5in; margin: 0 auto; padding: 0.5in; column-count: 2; column-gap: 0.25in; line-height: 1.15; font-size: 10pt; }
+    h1 { text-align: center; font-size: 24pt; margin-bottom: 8pt; column-span: all; font-weight: normal; }
+    .authors { text-align: center; font-size: 11pt; margin-bottom: 12pt; column-span: all; }
+    .abstract { border: 1px solid #333; padding: 10pt; margin: 12pt 0; text-align: justify; column-span: all; font-weight: bold; font-size: 9pt; }
+    .abstract strong { font-weight: bold; font-style: italic; }
+    h2 { font-size: 10pt; font-variant: small-caps; text-align: center; margin-top: 12pt; margin-bottom: 4pt; font-weight: normal; }
+    h3 { font-size: 10pt; font-style: italic; margin-top: 8pt; margin-bottom: 4pt; font-weight: normal; }
+    p { text-align: justify; text-indent: 0.15in; margin-bottom: 0; }
+    p:first-of-type { text-indent: 0; }
+    ul, ol, li { text-align: justify; }
+    .mermaid, .figure, .table-container { column-span: all; margin: 12pt 0; display: flex; flex-direction: column; align-items: center; background: white; padding: 10pt; border: 1px solid #ddd; }
+    .diagram-caption { text-align: center; font-style: italic; color: #333; font-size: 9pt; margin-top: 8pt; }
+    .table-caption { text-align: center; font-variant: small-caps; color: #333; font-size: 9pt; margin-bottom: 8pt; }
+    .references h2 { border-top: none; }
+    .references p { text-indent: -0.25in; padding-left: 0.25in; margin-bottom: 4pt; font-size: 9pt; }
+  `,
 };
 
 // Mermaid.js CDN + initialization script
@@ -402,9 +436,22 @@ export function wrapHtmlWithTemplate(
   htmlContent: string,
   title: string,
   style?: DocumentStyle,
+  includeToc: boolean = false
 ): string {
   const styleCss = style ? STYLE_CSS[style] : "";
   const hasMermaid = htmlContent.includes('class="mermaid"');
+  
+  let finalHtmlContent = htmlContent;
+  if (includeToc) {
+    const headings = [...htmlContent.matchAll(/<h2[^>]*>(.*?)<\/h2>/gi)];
+    if (headings.length > 0) {
+      const tocEntries = headings.map((match, i) => {
+        return `<div class="toc-entry"><span>${i + 1}. ${match[1]}</span></div>`;
+      }).join("\n");
+      const tocBlock = `<div class="toc"><div class="toc-title">Table of Contents</div>${tocEntries}</div>`;
+      finalHtmlContent = tocBlock + "\n" + finalHtmlContent;
+    }
+  }
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -416,7 +463,7 @@ export function wrapHtmlWithTemplate(
   ${hasMermaid ? MERMAID_SCRIPT : ""}
 </head>
 <body>
-  ${htmlContent}
+  ${finalHtmlContent}
 </body>
 </html>`;
 }

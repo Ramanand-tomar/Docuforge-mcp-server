@@ -13,7 +13,15 @@ import { registerAiSummarize } from "./ai-summarize.js";
 import { registerAddDiagram } from "./add-diagram.js";
 import { registerAiGenerateDiagram } from "./ai-generate-diagram.js";
 import { registerAgentTools } from "./agent-tools.js";
+import { registerImportDocument } from "./import-document.js";
 import { registerInfographicTools } from "./add-infographic.js";
+import { registerCitationTools } from "./citation-tools.js";
+import { registerExportFormats } from "./export-formats.js";
+import { registerAiResearchTools } from "./ai-research-tools.js";
+import { registerResearchTools } from "./research-tools.js";
+import { registerTocTool } from "./toc-tool.js";
+import { registerVersioningTools } from "./versioning-tools.js";
+import { registerSearchTool } from "./search-tool.js";
 
 export interface RegisterToolsOptions {
   pdfExport?: PdfExportFn;
@@ -32,6 +40,11 @@ export function registerAllTools(
   registerFormatDocument(server, docService);
   registerExportPdf(server, docService, options.pdfExport);
   registerGetDocument(server, docService);
+  registerImportDocument(server, docService);
+  registerExportFormats(server, docService);
+  registerTocTool(server, docService);
+  registerVersioningTools(server, docService);
+  registerSearchTool(server, docService);
 
   // Diagram tools
   registerAddDiagram(server, docService);
@@ -44,6 +57,13 @@ export function registerAllTools(
 
   // Infographic tools
   registerInfographicTools(server, docService, options.aiService ?? null);
+
+  // Citation tools
+  registerCitationTools(server, docService, options.aiService ?? null);
+
+  // AI research tools
+  registerAiResearchTools(server, docService, options.aiService ?? null);
+  registerResearchTools(server, docService, options.aiService ?? null);
 
   // Multi-agent system tools (PM, Architect, QA, Pitch Deck)
   registerAgentTools(server, docService, options.aiService ?? null);

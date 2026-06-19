@@ -6,7 +6,7 @@ export interface DocumentSection {
 }
 
 export type DocumentFormat = "markdown" | "latex" | "plain";
-export type DocumentStyle = "academic" | "resume" | "report" | "blog";
+export type DocumentStyle = "academic" | "resume" | "report" | "blog" | "research" | "ieee";
 
 export interface Document {
   id: string;
@@ -28,6 +28,14 @@ export interface DocumentSummary {
   sectionCount: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface SearchResult {
+  documentId: string;
+  sectionId: string;
+  sectionTitle: string;
+  snippet: string;
+  rank: number;
 }
 
 export interface CreateDocumentInput {

@@ -10,15 +10,20 @@
     "dev": "tsx src/index.ts"
   },
   "dependencies": {
-    "@docuforge/core": "workspace:*",
     "@docuforge/ai-integration": "workspace:*",
+    "@docuforge/core": "workspace:*",
     "@docuforge/pdf-engine": "workspace:*",
-    "express": "^5.1.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
+    "cors": "^2.8.6",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.1",
+    "helmet": "^8.1.0",
     "zod": "^3.25.0"
   },
   "devDependencies": {
-    "typescript": "^5.8.0",
-    "tsx": "^4.19.0"
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
   }
 }
