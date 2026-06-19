@@ -2,12 +2,14 @@
   "name": "docuforge-vscode",
   "displayName": "DocuForge",
   "description": "AI-powered document creation and PDF generation",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "docuforge",
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["Other"],
+  "categories": [
+    "Other"
+  ],
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
