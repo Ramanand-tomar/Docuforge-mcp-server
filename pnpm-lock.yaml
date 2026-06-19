@@ -23,7 +23,7 @@ importers:
 
   packages/ai-integration:
     dependencies:
-      '@docuforge/core':
+      '@docuforge-mcp/core':
         specifier: workspace:*
         version: link:../core
       '@google/genai':
@@ -110,13 +110,13 @@ importers:
 
   packages/mcp-server:
     dependencies:
-      '@docuforge/ai-integration':
+      '@docuforge-mcp/ai-integration':
         specifier: workspace:*
         version: link:../ai-integration
-      '@docuforge/core':
+      '@docuforge-mcp/core':
         specifier: workspace:*
         version: link:../core
-      '@docuforge/pdf-engine':
+      '@docuforge-mcp/pdf-engine':
         specifier: workspace:*
         version: link:../pdf-engine
       '@modelcontextprotocol/sdk':
@@ -153,7 +153,7 @@ importers:
 
   packages/pdf-engine:
     dependencies:
-      '@docuforge/core':
+      '@docuforge-mcp/core':
         specifier: workspace:*
         version: link:../core
       cloudinary:
@@ -178,13 +178,13 @@ importers:
 
   packages/rest-api:
     dependencies:
-      '@docuforge/ai-integration':
+      '@docuforge-mcp/ai-integration':
         specifier: workspace:*
         version: link:../ai-integration
-      '@docuforge/core':
+      '@docuforge-mcp/core':
         specifier: workspace:*
         version: link:../core
-      '@docuforge/pdf-engine':
+      '@docuforge-mcp/pdf-engine':
         specifier: workspace:*
         version: link:../pdf-engine
       cors:
