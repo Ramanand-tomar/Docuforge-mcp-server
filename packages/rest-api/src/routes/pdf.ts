@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { existsSync } from "fs";
-import type { PdfGenerator } from "@docuforge/pdf-engine";
+import type { PdfGenerator } from "@docuforge-mcp/pdf-engine";
 
 export function createPdfRoutes(pdfGenerator: PdfGenerator): Router {
   const router = Router();

@@ -1,8 +1,8 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DocumentService } from "@docuforge/core";
-import type { AiService } from "@docuforge/ai-integration";
-import { buildDocContext } from "@docuforge/ai-integration";
+import type { DocumentService } from "@docuforge-mcp/core";
+import type { AiService } from "@docuforge-mcp/ai-integration";
+import { buildDocContext } from "@docuforge-mcp/ai-integration";
 
 export function registerAiRewrite(
   server: McpServer,

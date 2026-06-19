@@ -1,5 +1,5 @@
 {
-  "name": "@docuforge/mcp-server",
+  "name": "@docuforge-mcp/mcp-server",
   "version": "0.1.0",
   
   "type": "module",
@@ -13,9 +13,9 @@
     "dev": "tsx src/index.ts"
   },
   "dependencies": {
-    "@docuforge/ai-integration": "workspace:*",
-    "@docuforge/core": "workspace:*",
-    "@docuforge/pdf-engine": "workspace:*",
+    "@docuforge-mcp/ai-integration": "workspace:*",
+    "@docuforge-mcp/core": "workspace:*",
+    "@docuforge-mcp/pdf-engine": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "cors": "^2.8.6",
     "express": "^5.1.0",

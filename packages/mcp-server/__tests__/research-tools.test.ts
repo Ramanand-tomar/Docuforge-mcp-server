@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { DocumentService, MemoryStorage, citationManager } from "@docuforge/core";
+import { DocumentService, MemoryStorage, citationManager } from "@docuforge-mcp/core";
 import { registerResearchTools } from "../src/tools/research-tools";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 

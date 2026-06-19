@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { DocumentNotFoundError, SectionNotFoundError } from "@docuforge/core";
+import { DocumentNotFoundError, SectionNotFoundError } from "@docuforge-mcp/core";
 
 export function errorHandler(
   err: Error,

@@ -1,13 +1,13 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DocumentService } from "@docuforge/core";
-import type { AiService } from "@docuforge/ai-integration";
+import type { DocumentService } from "@docuforge-mcp/core";
+import type { AiService } from "@docuforge-mcp/ai-integration";
 import {
   getInfographicTemplate,
   listInfographicTypes,
   wrapAsInfographicBlock,
   type InfographicType,
-} from "@docuforge/pdf-engine";
+} from "@docuforge-mcp/pdf-engine";
 
 const AI_INFOGRAPHIC_PROMPT = `You are an expert infographic designer. Generate HTML using ONLY these CSS classes (they are pre-defined, do NOT write any <style> tags):
 

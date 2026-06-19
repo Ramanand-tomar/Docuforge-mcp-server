@@ -2,7 +2,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import {
   FormatDocumentSchema,
   type DocumentService,
-} from "@docuforge/core";
+} from "@docuforge-mcp/core";
 
 export function registerFormatDocument(
   server: McpServer,

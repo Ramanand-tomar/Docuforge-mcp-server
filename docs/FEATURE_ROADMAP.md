@@ -283,7 +283,7 @@ flowchart LR
 
 ```
 packages/ppt-engine/
-  package.json          — depends on pptxgenjs, @docuforge/core
+  package.json          — depends on pptxgenjs, @docuforge-mcp/core
   src/
     types.ts            — Presentation, Slide, SlideLayout, Theme interfaces
     themes.ts           — Theme definitions (colors, fonts, backgrounds)
@@ -835,7 +835,7 @@ packages/cli/
 
 **Implementation**:
 - Create Express middleware that validates `req.body` against Zod schemas
-- Reuse schemas from `@docuforge/core`
+- Reuse schemas from `@docuforge-mcp/core`
 - Apply to all POST/PUT routes
 
 **Effort**: Small (~2 hours)

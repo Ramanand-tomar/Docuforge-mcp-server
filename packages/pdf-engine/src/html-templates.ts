@@ -1,4 +1,4 @@
-import type { DocumentStyle } from "@docuforge/core";
+import type { DocumentStyle } from "@docuforge-mcp/core";
 
 const BASE_CSS = `
   * { margin: 0; padding: 0; box-sizing: border-box; }

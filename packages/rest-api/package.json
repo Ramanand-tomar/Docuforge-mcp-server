@@ -1,5 +1,5 @@
 {
-  "name": "@docuforge/rest-api",
+  "name": "@docuforge-mcp/rest-api",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -10,9 +10,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@docuforge/ai-integration": "workspace:*",
-    "@docuforge/core": "workspace:*",
-    "@docuforge/pdf-engine": "workspace:*",
+    "@docuforge-mcp/ai-integration": "workspace:*",
+    "@docuforge-mcp/core": "workspace:*",
+    "@docuforge-mcp/pdf-engine": "workspace:*",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-rate-limit": "^7.5.0",

@@ -1,4 +1,4 @@
-import type { Document } from "@docuforge/core";
+import type { Document } from "@docuforge-mcp/core";
 
 export function buildDocContext(doc: Document, renderedContent: string): string {
   return [

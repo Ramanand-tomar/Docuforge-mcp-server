@@ -1,5 +1,5 @@
 import { Document as DocxDocument, Packer, Paragraph, HeadingLevel, TextRun } from "docx";
-import type { Document } from "@docuforge/core";
+import type { Document } from "@docuforge-mcp/core";
 import { writeFile } from "fs/promises";
 import * as path from "path";
 

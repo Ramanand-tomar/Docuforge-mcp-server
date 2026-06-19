@@ -4,9 +4,9 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
-import { DocumentService, MemoryStorage, SqliteStorage, citationManager } from "@docuforge/core";
-import { PdfGenerator } from "@docuforge/pdf-engine";
-import { AiService, GeminiProvider } from "@docuforge/ai-integration";
+import { DocumentService, MemoryStorage, SqliteStorage, citationManager } from "@docuforge-mcp/core";
+import { PdfGenerator } from "@docuforge-mcp/pdf-engine";
+import { AiService, GeminiProvider } from "@docuforge-mcp/ai-integration";
 import { registerAllTools } from "./tools/register-all.js";
 import { mkdir } from "fs/promises";
 

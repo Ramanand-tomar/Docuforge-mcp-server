@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import type { DocumentService } from "@docuforge/core";
-import type { PdfGenerator } from "@docuforge/pdf-engine";
-import type { AiService } from "@docuforge/ai-integration";
+import type { DocumentService } from "@docuforge-mcp/core";
+import type { PdfGenerator } from "@docuforge-mcp/pdf-engine";
+import type { AiService } from "@docuforge-mcp/ai-integration";
 import { createDocumentRoutes } from "./routes/documents.js";
 import { createPdfRoutes } from "./routes/pdf.js";
 import { createAiRoutes } from "./routes/ai.js";

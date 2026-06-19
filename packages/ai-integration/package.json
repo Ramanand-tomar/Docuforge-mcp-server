@@ -1,5 +1,5 @@
 {
-  "name": "@docuforge/ai-integration",
+  "name": "@docuforge-mcp/ai-integration",
   "version": "0.1.0",
   
   "type": "module",
@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@google/genai": "^2.8.0",
-    "@docuforge/core": "workspace:*"
+    "@docuforge-mcp/core": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.8.0"

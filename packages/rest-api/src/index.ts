@@ -3,9 +3,9 @@ import {
   DocumentService,
   MemoryStorage,
   SqliteStorage,
-} from "@docuforge/core";
-import { PdfGenerator } from "@docuforge/pdf-engine";
-import { AiService, GeminiProvider } from "@docuforge/ai-integration";
+} from "@docuforge-mcp/core";
+import { PdfGenerator } from "@docuforge-mcp/pdf-engine";
+import { AiService, GeminiProvider } from "@docuforge-mcp/ai-integration";
 import { createApp } from "./app.js";
 import { config } from "./config.js";
 

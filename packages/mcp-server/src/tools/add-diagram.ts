@@ -1,12 +1,12 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DocumentService } from "@docuforge/core";
+import type { DocumentService } from "@docuforge-mcp/core";
 import {
   getDiagramTemplate,
   listDiagramTypes,
   wrapAsMermaidBlock,
   type DiagramType,
-} from "@docuforge/pdf-engine";
+} from "@docuforge-mcp/pdf-engine";
 
 export function registerAddDiagram(
   server: McpServer,

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DocumentService } from "@docuforge/core";
-import { exportToDocx, renderMarkdownToHtml, wrapHtmlWithTemplate } from "@docuforge/pdf-engine";
+import type { DocumentService } from "@docuforge-mcp/core";
+import { exportToDocx, renderMarkdownToHtml, wrapHtmlWithTemplate } from "@docuforge-mcp/pdf-engine";
 import { writeFile, mkdir } from "fs/promises";
 import * as path from "path";
 

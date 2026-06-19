@@ -1,8 +1,8 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DocumentService } from "@docuforge/core";
-import type { AiService } from "@docuforge/ai-integration";
-import { wrapAsMermaidBlock, DIAGRAM_TEMPLATES } from "@docuforge/pdf-engine";
+import type { DocumentService } from "@docuforge-mcp/core";
+import type { AiService } from "@docuforge-mcp/ai-integration";
+import { wrapAsMermaidBlock, DIAGRAM_TEMPLATES } from "@docuforge-mcp/pdf-engine";
 
 const DIAGRAM_PROMPT = `You are a Mermaid diagram expert. Generate a Mermaid diagram based on the user's description.
 

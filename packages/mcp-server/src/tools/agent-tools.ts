@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DocumentService } from "@docuforge/core";
+import type { DocumentService } from "@docuforge-mcp/core";
 import {
   type AiService,
   AgentSystem,
@@ -9,7 +9,7 @@ import {
   listTemplates,
   type TemplateType,
   buildDocContext,
-} from "@docuforge/ai-integration";
+} from "@docuforge-mcp/ai-integration";
 
 export function registerAgentTools(
   server: McpServer,

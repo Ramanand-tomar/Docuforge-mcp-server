@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DocumentService } from "@docuforge/core";
-import { importMarkdown, importDocx, importPdf } from "@docuforge/core";
+import type { DocumentService } from "@docuforge-mcp/core";
+import { importMarkdown, importDocx, importPdf } from "@docuforge-mcp/core";
 import { readFile } from "fs/promises";
 
 export function registerImportDocument(

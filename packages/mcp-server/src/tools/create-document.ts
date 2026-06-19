@@ -1,5 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { CreateDocumentSchema, type DocumentService } from "@docuforge/core";
+import { CreateDocumentSchema, type DocumentService } from "@docuforge-mcp/core";
 
 export function registerCreateDocument(
   server: McpServer,

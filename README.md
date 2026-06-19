@@ -87,11 +87,11 @@ This repository includes a `render.yaml` Blueprint file, making it extremely eas
 ## 🏗 System Architecture
 
 DocuForge acts as a multi-tier monorepo:
-- **`@docuforge/core`**: Document/citation models, SQLite storage layer, and IEEE rendering engine.
-- **`@docuforge/pdf-engine`**: Puppeteer-based HTML-to-PDF compilation.
-- **`@docuforge/mcp-server`**: Registers 9+ core MCP tools (e.g. `create_ieee_paper`, `import_bibtex`, `export_pdf`).
-- **`@docuforge/rest-api`**: Express app serving the REST endpoints and the MCP SSE `/mcp` proxy.
-- **`@docuforge/dashboard`**: Vite + React frontend.
+- **`@docuforge-mcp/core`**: Document/citation models, SQLite storage layer, and IEEE rendering engine.
+- **`@docuforge-mcp/pdf-engine`**: Puppeteer-based HTML-to-PDF compilation.
+- **`@docuforge-mcp/mcp-server`**: Registers 9+ core MCP tools (e.g. `create_ieee_paper`, `import_bibtex`, `export_pdf`).
+- **`@docuforge-mcp/rest-api`**: Express app serving the REST endpoints and the MCP SSE `/mcp` proxy.
+- **`@docuforge-mcp/dashboard`**: Vite + React frontend.
 - **`docuforge-vscode`**: VS Code extension client.
 
 ## 🧪 Testing

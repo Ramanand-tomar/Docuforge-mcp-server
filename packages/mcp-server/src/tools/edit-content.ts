@@ -1,5 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { EditContentSchema, type DocumentService } from "@docuforge/core";
+import { EditContentSchema, type DocumentService } from "@docuforge-mcp/core";
 
 export function registerEditContent(
   server: McpServer,

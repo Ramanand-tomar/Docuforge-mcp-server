@@ -1,5 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { ExportPdfSchema, type DocumentService } from "@docuforge/core";
+import { ExportPdfSchema, type DocumentService } from "@docuforge-mcp/core";
 
 export type PdfExportFn = (documentId: string) => Promise<string>;
 
@@ -24,7 +24,7 @@ export function registerExportPdf(
               text: JSON.stringify({
                 success: false,
                 error:
-                  "PDF engine not available. Install @docuforge/pdf-engine to enable PDF export.",
+                  "PDF engine not available. Install @docuforge-mcp/pdf-engine to enable PDF export.",
               }),
             },
           ],

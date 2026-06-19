@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
-import { MemoryStorage, DocumentService } from "@docuforge/core";
-import { PdfGenerator } from "@docuforge/pdf-engine";
+import { MemoryStorage, DocumentService } from "@docuforge-mcp/core";
+import { PdfGenerator } from "@docuforge-mcp/pdf-engine";
 import { createApp } from "../src/http";
 import * as http from "http";
 

@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import { mkdir } from "fs/promises";
-import type { Document, DocumentService } from "@docuforge/core";
+import type { Document, DocumentService } from "@docuforge-mcp/core";
 import { renderMarkdownToHtml } from "./markdown-renderer.js";
 import { wrapHtmlWithTemplate } from "./html-templates.js";
 import { htmlToPdf } from "./puppeteer-pdf.js";

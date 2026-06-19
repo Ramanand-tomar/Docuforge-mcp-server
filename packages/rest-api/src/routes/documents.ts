@@ -1,6 +1,6 @@
 import { Router } from "express";
-import type { DocumentService } from "@docuforge/core";
-import { citationManager } from "@docuforge/core";
+import type { DocumentService } from "@docuforge-mcp/core";
+import { citationManager } from "@docuforge-mcp/core";
 
 export function createDocumentRoutes(docService: DocumentService): Router {
   const router = Router();
@@ -39,7 +39,7 @@ export function createDocumentRoutes(docService: DocumentService): Router {
         return;
       }
       
-      const { importMarkdown, importDocx, importPdf } = await import("@docuforge/core");
+      const { importMarkdown, importDocx, importPdf } = await import("@docuforge-mcp/core");
       
       let importedDoc;
       switch (format) {
@@ -212,7 +212,7 @@ export function createDocumentRoutes(docService: DocumentService): Router {
   router.get("/:id/export-docx", async (req, res, next) => {
     try {
       const doc = await docService.getDocument(req.params.id);
-      const { exportToDocx } = await import("@docuforge/pdf-engine");
+      const { exportToDocx } = await import("@docuforge-mcp/pdf-engine");
       const { mkdir } = await import("fs/promises");
       await mkdir("./data", { recursive: true });
       const filePath = await exportToDocx(doc, "./data");
@@ -227,7 +227,7 @@ export function createDocumentRoutes(docService: DocumentService): Router {
     try {
       const doc = await docService.getDocument(req.params.id);
       const markdown = await docService.renderDocumentContent(req.params.id);
-      const { renderMarkdownToHtml, wrapHtmlWithTemplate } = await import("@docuforge/pdf-engine");
+      const { renderMarkdownToHtml, wrapHtmlWithTemplate } = await import("@docuforge-mcp/pdf-engine");
       const htmlContent = renderMarkdownToHtml(markdown);
       const fullHtml = wrapHtmlWithTemplate(htmlContent, doc.title, doc.style);
       

@@ -1,5 +1,5 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { AppendContentSchema, type DocumentService } from "@docuforge/core";
+import { AppendContentSchema, type DocumentService } from "@docuforge-mcp/core";
 
 export function registerAppendContent(
   server: McpServer,

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { DocumentService } from "@docuforge/core";
+import type { DocumentService } from "@docuforge-mcp/core";
 
 export function registerSearchTool(server: McpServer, docService: DocumentService) {
   server.tool(
