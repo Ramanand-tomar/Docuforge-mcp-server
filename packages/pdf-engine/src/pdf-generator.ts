@@ -33,11 +33,11 @@ export class PdfGenerator {
     await htmlToPdf(fullHtml, outputPath);
     
     if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-      console.log(`Cloudinary credentials not fully configured. Returning local path: ${outputPath}`);
+      console.error(`Cloudinary credentials not fully configured. Returning local path: ${outputPath}`);
       return outputPath;
     }
     
-    console.log(`Uploading PDF to Cloudinary...`);
+    console.error(`Uploading PDF to Cloudinary...`);
     const uploadResult = await cloudinary.uploader.upload(outputPath, {
       resource_type: "raw", // PDFs should be uploaded as 'raw' to serve correctly in browser
       public_id: `docuforge_papers/${sanitizedTitle}_${Date.now()}.pdf`
