@@ -16,35 +16,24 @@ DocuForge has been heavily upgraded with production-ready features tailored for 
 
 ## 🤖 Quick Start for Claude Desktop (Local MCP)
 
-Want to give Claude (or Cursor) the ability to autonomously format IEEE papers, manage citations, and export PDFs? You can run DocuForge locally as an MCP server!
+Want to give Claude (or Cursor) the ability to autonomously format IEEE papers, manage citations, and export PDFs? You can run DocuForge directly via NPM!
 
-### 1. Download & Build
-
-```bash
-# Clone the repository
-git clone https://github.com/Ramanand-tomar/Docuforge-mcp-server.git
-cd Docuforge-mcp-server
-
-# Install dependencies and compile the code
-pnpm install
-pnpm build
-```
-
-### 2. Connect to Claude Desktop
+### 1. Connect to Claude Desktop
 
 Open your Claude Desktop configuration file:
 - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 - **Mac:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 
-Add the `docuforge` tool to your `mcpServers` list. **Make sure to replace `<YOUR_ABSOLUTE_PATH>` with the actual path to the folder where you cloned the repo**, and add your own Gemini API key!
+Add the `docuforge` tool to your `mcpServers` list and add your own Gemini API key!
 
 ```json
 {
   "mcpServers": {
     "docuforge": {
-      "command": "node",
+      "command": "npx",
       "args": [
-        "<YOUR_ABSOLUTE_PATH>/Docuforge-mcp-server/packages/mcp-server/dist/index.js"
+        "-y",
+        "@docuforge-mcp/mcp-server"
       ],
       "env": {
         "STORAGE_TYPE": "sqlite",
@@ -55,7 +44,7 @@ Add the `docuforge` tool to your `mcpServers` list. **Make sure to replace `<YOU
 }
 ```
 
-### 3. Start Creating!
+### 2. Start Creating!
 Restart Claude Desktop. You will see a plug icon indicating the tools are loaded! You can now type:
 > *"Create a new IEEE format research paper about Neural Networks, add a few sections, and export it to a PDF."*
 
@@ -84,12 +73,17 @@ This repository includes a `render.yaml` Blueprint file, making it extremely eas
 4. Render will automatically detect the `render.yaml` file and provision the web services.
 5. Set your secret environment variables (`MCP_API_KEY`, `JWT_SECRET`, `CLOUDINARY_*`) in the Render dashboard for the service.
 
+## 📦 NPM Packages
+
+DocuForge is published on NPM and split into several modular packages:
+- [`@docuforge-mcp/core`](https://www.npmjs.com/package/@docuforge-mcp/core): Document/citation models, SQLite storage layer, and IEEE rendering engine.
+- [`@docuforge-mcp/pdf-engine`](https://www.npmjs.com/package/@docuforge-mcp/pdf-engine): Puppeteer-based HTML-to-PDF compilation.
+- [`@docuforge-mcp/ai-integration`](https://www.npmjs.com/package/@docuforge-mcp/ai-integration): Gemini LLM wrapper for autonomous document improvements.
+- [`@docuforge-mcp/mcp-server`](https://www.npmjs.com/package/@docuforge-mcp/mcp-server): Registers 9+ core MCP tools (e.g. `create_ieee_paper`, `import_bibtex`, `export_pdf`).
+
 ## 🏗 System Architecture
 
-DocuForge acts as a multi-tier monorepo:
-- **`@docuforge-mcp/core`**: Document/citation models, SQLite storage layer, and IEEE rendering engine.
-- **`@docuforge-mcp/pdf-engine`**: Puppeteer-based HTML-to-PDF compilation.
-- **`@docuforge-mcp/mcp-server`**: Registers 9+ core MCP tools (e.g. `create_ieee_paper`, `import_bibtex`, `export_pdf`).
+The overarching monorepo also includes web-facing functionality:
 - **`@docuforge-mcp/rest-api`**: Express app serving the REST endpoints and the MCP SSE `/mcp` proxy.
 - **`@docuforge-mcp/dashboard`**: Vite + React frontend.
 - **`docuforge-vscode`**: VS Code extension client.
