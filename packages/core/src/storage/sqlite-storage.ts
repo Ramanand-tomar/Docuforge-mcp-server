@@ -14,23 +14,45 @@ export class SqliteStorage implements IStorage {
   }
 
   private initTables() {
-    this.db.exec(`
-      PRAGMA foreign_keys=off;
-      CREATE TABLE IF NOT EXISTS documents_new (
-        id TEXT PRIMARY KEY,
-        title TEXT NOT NULL,
-        format TEXT NOT NULL CHECK(format IN ('markdown', 'latex', 'plain')),
-        style TEXT CHECK(style IN ('academic', 'resume', 'report', 'blog', 'research', 'ieee', NULL)),
-        created_at TEXT NOT NULL,
-        updated_at TEXT NOT NULL,
-        user_id TEXT,
-        version INTEGER NOT NULL DEFAULT 1
-      );
-      INSERT OR IGNORE INTO documents_new SELECT * FROM documents;
-      DROP TABLE documents;
-      ALTER TABLE documents_new RENAME TO documents;
-      PRAGMA foreign_keys=on;
+    // First, check if documents table exists
+    const hasDocumentsTable = this.db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='documents'").get();
 
+    if (hasDocumentsTable) {
+      // Perform migration
+      this.db.exec(`
+        PRAGMA foreign_keys=off;
+        CREATE TABLE IF NOT EXISTS documents_new (
+          id TEXT PRIMARY KEY,
+          title TEXT NOT NULL,
+          format TEXT NOT NULL CHECK(format IN ('markdown', 'latex', 'plain')),
+          style TEXT CHECK(style IN ('academic', 'resume', 'report', 'blog', 'research', 'ieee', NULL)),
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          user_id TEXT,
+          version INTEGER NOT NULL DEFAULT 1
+        );
+        INSERT OR IGNORE INTO documents_new SELECT * FROM documents;
+        DROP TABLE documents;
+        ALTER TABLE documents_new RENAME TO documents;
+        PRAGMA foreign_keys=on;
+      `);
+    } else {
+      // Fresh database, just create the table
+      this.db.exec(`
+        CREATE TABLE documents (
+          id TEXT PRIMARY KEY,
+          title TEXT NOT NULL,
+          format TEXT NOT NULL CHECK(format IN ('markdown', 'latex', 'plain')),
+          style TEXT CHECK(style IN ('academic', 'resume', 'report', 'blog', 'research', 'ieee', NULL)),
+          created_at TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          user_id TEXT,
+          version INTEGER NOT NULL DEFAULT 1
+        );
+      `);
+    }
+
+    this.db.exec(`
       CREATE TABLE IF NOT EXISTS citations (
         id TEXT PRIMARY KEY,
         document_id TEXT NOT NULL,
