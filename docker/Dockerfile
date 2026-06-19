@@ -21,10 +21,6 @@ COPY . .
 
 RUN pnpm -r run build
 
-# Prune dev dependencies after build to save space
-RUN pnpm -r exec rm -rf node_modules src tsconfig.json
-RUN pnpm install --prod --frozen-lockfile
-
 # Stage 2: Production
 FROM node:22-slim
 
